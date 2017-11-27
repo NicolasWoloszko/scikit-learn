@@ -1,6 +1,7 @@
 # Authors: Alexandre Gramfort <alexandre.gramfort@inria.fr>
 #          Vincent Michel <vincent.michel@inria.fr>
 #          Gilles Louppe <g.louppe@gmail.com>
+#          Nicolas Woloszko <nicolas.woloszko@oecd.org>
 #
 # License: BSD 3 clause
 
@@ -124,7 +125,7 @@ class RFE(BaseEstimator, MetaEstimatorMixin, SelectorMixin):
     def _estimator_type(self):
         return self.estimator._estimator_type
 
-    def fit(self, X, y):
+    def fit(self, X, y, **fit_params):
         """Fit the RFE model and then the underlying estimator on the selected
            features.
 
@@ -136,9 +137,9 @@ class RFE(BaseEstimator, MetaEstimatorMixin, SelectorMixin):
         y : array-like, shape = [n_samples]
             The target values.
         """
-        return self._fit(X, y)
+        return self._fit(X, y, **fit_params)
 
-    def _fit(self, X, y, step_score=None):
+    def _fit(self, X, y, step_score=None, **fit_params):
         # Parameter step_score controls the calculation of self.scores_
         # step_score is not exposed to users
         # and is used when implementing RFECV
@@ -175,7 +176,7 @@ class RFE(BaseEstimator, MetaEstimatorMixin, SelectorMixin):
             if self.verbose > 0:
                 print("Fitting estimator with %d features." % np.sum(support_))
 
-            estimator.fit(X[:, features], y)
+            estimator.fit(X[:, features], y, **fit_params)
 
             # Get coefs
             if hasattr(estimator, 'coef_'):
