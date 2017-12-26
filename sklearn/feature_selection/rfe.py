@@ -22,7 +22,7 @@ from ..metrics.scorer import check_scoring
 from .base import SelectorMixin
 
 
-def _rfe_single_fit(rfe, estimator, X, y, train, test, scorer):
+def _rfe_single_fit(rfe, estimator, X, y, train, test, scorer, **fit_params):
     """
     Return the score for a fit across one fold.
     """
@@ -30,7 +30,7 @@ def _rfe_single_fit(rfe, estimator, X, y, train, test, scorer):
     X_test, y_test = _safe_split(estimator, X, y, test, train)
     return rfe._fit(
         X_train, y_train, lambda estimator, features:
-        _score(estimator, X_test[:, features], y_test, scorer)).scores_
+        _score(estimator, X_test[:, features], y_test, scorer), **fit_params).scores_
 
 
 class RFE(BaseEstimator, MetaEstimatorMixin, SelectorMixin):
