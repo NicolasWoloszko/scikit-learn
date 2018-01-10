@@ -391,7 +391,7 @@ class RFECV(RFE, MetaEstimatorMixin):
         self.verbose = verbose
         self.n_jobs = n_jobs
 
-    def fit(self, X, y, groups=None):
+    def fit(self, X, y, groups=None, **fit_params):
         """Fit the RFE model and automatically tune the number of selected
            features.
 
@@ -459,7 +459,7 @@ class RFECV(RFE, MetaEstimatorMixin):
                   n_features_to_select=n_features_to_select, step=self.step,
                   verbose=self.verbose)
 
-        rfe.fit(X, y)
+        rfe.fit(X, y, **fit_params)
 
         # Set final attributes
         self.support_ = rfe.support_
